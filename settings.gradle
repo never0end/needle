@@ -1,0 +1,4 @@
+include ':needle-lib', ':needle-plugin', ':needle-compiler'//, ':needle-sample'
+
+rootProject.name = "Needle"
+

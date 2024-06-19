@@ -1,0 +1,13 @@
+*.iml
+.gradle
+local.properties
+bin
+gen
+build
+out
+pom.xml.*
+release.properties
+# Idea
+.idea
+#MacOS
+.DS_Store

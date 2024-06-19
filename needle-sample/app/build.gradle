@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        applicationId "never.end.needle.sample"
+        minSdkVersion 22
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+
+//    implementation gradleApi()
+    implementation ('never.end.needle:needle-lib:0.1')  { changing = true }
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    annotationProcessor('never.end.needle:needle-compiler:0.1') { changing = true }
+    implementation files('libs/needle-sample-lib-0.1-SNAPSHOT.jar')
+}
+
+apply plugin: 'never.end.needle-plugin'

@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+
+version 0.1
+group "never.end.needle"
+
+apply from: rootProject.file('gradle/java-publish.gradle')
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
