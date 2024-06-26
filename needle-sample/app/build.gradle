@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
-
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.2"
@@ -20,12 +19,9 @@ android {
 }
 
 dependencies {
-
-//    implementation gradleApi()
-    implementation ('never.end.needle:needle-lib:0.1')  { changing = true }
-
+    implementation 'io.github.never0end:needle-lib:0.1'
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    annotationProcessor('never.end.needle:needle-compiler:0.1') { changing = true }
+    annotationProcessor 'io.github.never0end:needle-compiler:0.1'
     implementation files('libs/needle-sample-lib-0.1-SNAPSHOT.jar')
 }
 

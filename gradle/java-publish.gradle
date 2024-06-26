@@ -1,7 +1,41 @@
 
 apply plugin: 'maven-publish'
+apply plugin: 'signing'
 
+def isReleaseBuild() {
+    return version.toString().contains("SNAPSHOT") == false
+}
 
+def getReleaseRepositoryUrl() {
+    return hasProperty('RELEASE_REPOSITORY_URL') ? RELEASE_REPOSITORY_URL : readPropertyFromLocalProperties('RELEASE_REPOSITORY_URL')
+}
+
+def getSnapshotRepositoryUrl() {
+    return hasProperty('SNAPSHOT_REPOSITORY_URL') ? SNAPSHOT_REPOSITORY_URL : readPropertyFromLocalProperties('SNAPSHOT_REPOSITORY_URL')
+}
+
+def readPropertyFromLocalProperties(String key) {
+    Properties properties = new Properties()
+    try {
+        properties.load(project.rootProject.file('local.properties').newDataInputStream())
+    } catch (Exception e) {
+        println("load local properties failed msg:${e.message}")
+    }
+    return properties.getProperty(key)
+}
+
+def getRepositoryUsername() {
+    return hasProperty('REPOSITORY_USERNAME') ? REPOSITORY_USERNAME : readPropertyFromLocalProperties('REPOSITORY_USERNAME')
+}
+
+def getRepositoryPassword() {
+    return hasProperty('REPOSITORY_PASSWORD') ? REPOSITORY_PASSWORD : readPropertyFromLocalProperties('REPOSITORY_PASSWORD')
+}
+
+if (!project.hasProperty("signing.keyId")) {
+    println "GRADLE_USER_HOME: ${System.getenv('GRADLE_USER_HOME')}"
+    throw new RuntimeException("No signing configurations.")
+}
 
 def javadocJar = task("javadocJar", type: Jar, dependsOn: javadoc) {
     classifier = 'javadoc'
@@ -12,23 +46,66 @@ def sourcesJar = task("sourcesJar", type: Jar) {
     from sourceSets.main.java.srcDirs
 }
 
+def pomConfig = {
+    scm {
+        url POM_SCM_URL
+        tag POM_SCM_COMMIT
+    }
+
+    licenses {
+        license {
+            name POM_LICENCE_NAME
+            url POM_LICENCE_URL
+            distribution POM_LICENCE_DIST
+        }
+    }
+
+    developers {
+        developer {
+            id POM_DEVELOPER_ID
+            name POM_DEVELOPER_NAME
+        }
+    }
+
+    name POM_NAME
+    url POM_URL
+}
+
 publishing {
     publications {
         Component(MavenPublication) {
             from components.java
-            groupId = group
+            groupId = POM_GROUP_ID
             artifactId = POM_ARTIFACT_ID
             version = version
 
             artifact sourcesJar
             artifact javadocJar
+
+            pom.withXml {
+                asNode().children().last() + pomConfig
+                asNode().appendNode('description', POM_DESCRIPTION)
+            }
         }
     }
 }
 
+publishing.repositories {
+    maven {
+        url "${isReleaseBuild() ? getReleaseRepositoryUrl() : getSnapshotRepositoryUrl()}"
+        credentials {
+            username "${getRepositoryUsername()}"
+            password "${getRepositoryPassword()}"
+        }
+    }
+}
+
+signing {
+    sign publishing.publications
+}
 
 task buildAndPublishToLocalMaven(type: Copy, dependsOn: ['build', 'publishToMavenLocal']) {
-    group = 'never.end.needle'
+    group = POM_GROUP_ID
 
     // save artifacts files to artifacts folder
     from configurations.archives.allArtifacts.files

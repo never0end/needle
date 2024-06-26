@@ -4,9 +4,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
-
-version 0.1
-group "never.end.needle"
+version "0.1"
 
 apply from: rootProject.file('gradle/java-publish.gradle')
 

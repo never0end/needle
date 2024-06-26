@@ -5,6 +5,7 @@ buildscript {
     ext.asm_version = '9.1'
 
     repositories {
+        mavenCentral()
         maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
         mavenLocal()
 //        maven { url 'https://maven.aliyun.com/repository/jcenter' }  // <= here
@@ -28,15 +29,30 @@ buildscript {
 allprojects {
     repositories {
         mavenLocal()
-
         maven{url 'http://maven.aliyun.com/nexus/content/groups/public/'}
-
         google()
         jcenter()
+        mavenCentral()
     }
 
     tasks.withType(Javadoc).all {
         enabled = false // TODO:
         options.setEncoding('UTF-8')
     }
+}
+
+ext{
+    POM_NAME = "Needle for Android"
+    POM_URL = "https://github.com/never0end/needle"
+    POM_DESCRIPTION = "Needle is a android class auto-replacement build tools"
+    POM_GROUP_ID = "io.github.never0end"
+    POM_SCM_URL = "https://github.com/never0end/needle.git"
+    POM_SCM_COMMIT = ""
+
+    POM_LICENCE_NAME = "BSD License"
+    POM_LICENCE_URL = "https://opensource.org/licenses/BSD-3-Clause"
+    POM_LICENCE_DIST = "repo"
+
+    POM_DEVELOPER_ID = "never0end"
+    POM_DEVELOPER_NAME = "NeverEnd"
 }

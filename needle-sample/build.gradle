@@ -3,25 +3,22 @@ buildscript {
     repositories {
         mavenLocal()
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
         // classpath
         classpath 'com.android.tools.build:gradle:4.0.0'
-        classpath ("never.end.needle:needle-plugin:0.1") { changing = true }  //local maven 强制更新最新版本，所以依赖项不用变更新版本号
+        classpath "io.github.never0end:needle-plugin:0.1" //local maven 强制更新最新版本，所以依赖项不用变更新版本号
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
     }
-
-
 }
 
 allprojects {
     repositories {
         mavenLocal()
-
         google()
-        jcenter()
+        mavenCentral()
     }
 
     tasks.withType(Javadoc).all {
