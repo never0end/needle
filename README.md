@@ -26,7 +26,7 @@ buildscript {
     dependencies {
         // classpath
         ...
-        classpath 'never.end.needle:needle-plugin:0.1'
+        classpath 'io.github.never0end:needle-plugin:0.1'
     }
 }
 ```
@@ -39,8 +39,8 @@ android {
 }
 
 dependencies {
-    implementation 'never.end.needle:needle-lib:0.1'
-    annotationProcessor 'never.end.needle:needle-compiler:0.1'
+    implementation 'io.github.never0end:needle-lib:0.1'
+    annotationProcessor 'io.github.never0end:needle-compiler:0.1'
 }
 ```
 
